@@ -124,8 +124,8 @@ Create a `.env` file inside the `backend` folder with:
 ```env
 PORT=5000
 MONGO_URI=mongodb://127.0.0.1:27017/smartlink
-JWT_SECRET=super_secret_jwt_key_smartlink_ai_2026
-JWT_EXPIRE=7d
+JWT_SECRET=*******
+JWT_EXPIRE=**
 FRONTEND_URL=http://localhost:5173
 NODE_ENV=development
 ```
