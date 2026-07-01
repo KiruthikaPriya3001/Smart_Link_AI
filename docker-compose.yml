@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # MongoDB database service
+  mongodb:
+    image: mongo:6.0
+    container_name: smartlink_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - smartlink_net
+
+  # Express.js backend API service
+  backend:
+    build: ./backend
+    container_name: smartlink_backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGO_URI=mongodb://mongodb:27017/smartlink
+      - JWT_SECRET=super_secret_jwt_key_smartlink_ai_2026
+      - JWT_EXPIRE=7d
+      - FRONTEND_URL=http://localhost:5173
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+    networks:
+      - smartlink_net
+
+  # React.js frontend Nginx static service
+  frontend:
+    build: ./frontend
+    container_name: smartlink_frontend
+    restart: always
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - smartlink_net
+
+volumes:
+  mongo_data:
+
+networks:
+  smartlink_net:
+    driver: bridge
