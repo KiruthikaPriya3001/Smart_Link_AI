@@ -18,19 +18,25 @@ const app = express();
 
 // Middlewares
 const allowedOrigins = [
-  process.env.FRONTEND_URL,           // Vercel production URL (set in Render env vars)
+  process.env.FRONTEND_URL,           // Explicit Vercel URL from env var (most secure)
   'http://localhost:5173',
   'http://127.0.0.1:5173',
 ].filter(Boolean);
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (e.g. Postman, server-to-server)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS blocked: origin ${origin} not allowed`));
-    }
+    // Allow requests with no origin (e.g. Postman, mobile apps, server-to-server)
+    if (!origin) return callback(null, true);
+
+    // Allow explicitly listed origins
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+
+    // Allow any Vercel preview/production deployment (*.vercel.app)
+    if (origin.endsWith('.vercel.app')) return callback(null, true);
+
+    // Block everything else
+    console.warn(`CORS blocked request from: ${origin}`);
+    callback(new Error(`CORS blocked: origin ${origin} not allowed`));
   },
   credentials: true,
 }));
