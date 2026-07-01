@@ -217,16 +217,16 @@ export default function CreateUrlPage() {
                   </label>
                   <span className="text-[10px] text-slate-400 font-semibold font-mono">/your-alias</span>
                 </div>
-                <div className="relative">
-                  <span className="absolute left-4 top-3 text-sm font-semibold text-slate-400 select-none font-mono">
-                    smartlink.app/
+                <div className="flex rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus-within:border-brand-500 transition-colors overflow-hidden">
+                  <span className="flex items-center px-3 py-3 text-sm font-semibold text-slate-400 select-none font-mono bg-slate-100 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 whitespace-nowrap flex-shrink-0">
+                    your-app/
                   </span>
                   <input
                     type="text"
                     value={customAlias}
                     onChange={(e) => setCustomAlias(e.target.value.replace(/[^a-zA-Z0-9_-]/g, ''))}
-                    placeholder="react-docs"
-                    className="w-full pl-[110px] pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:border-brand-500 text-sm font-mono transition-colors"
+                    placeholder="my-brand-link"
+                    className="flex-1 min-w-0 px-3 py-3 bg-transparent focus:outline-none text-sm font-mono text-slate-800 dark:text-slate-200 placeholder-slate-400"
                   />
                 </div>
               </div>

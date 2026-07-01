@@ -93,12 +93,17 @@ const createShortUrl = async (req, res) => {
     const userId = req.user.id;
 
     // Check custom alias uniqueness if provided
+    // NOTE: Aliases are GLOBALLY unique across all users — a short URL alias
+    // must resolve to exactly one destination regardless of who created it.
     if (customAlias) {
       const aliasExists = await Url.findOne({
         $or: [{ shortCode: customAlias }, { customAlias }],
       });
       if (aliasExists) {
-        return res.status(400).json({ success: false, message: 'Custom alias is already in use' });
+        return res.status(400).json({
+          success: false,
+          message: `The alias "${customAlias}" is already taken by another link. Please choose a different alias.`,
+        });
       }
     }
 
